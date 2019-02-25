@@ -1,0 +1,7 @@
+## To backup project folders to external drive:
+
+(base) conrad@conrad-Precision-Tower-3620:~$ rsync -av /home/conrad/ecoli_all /media/conrad/New\ Volume
+
+# Note: do not put slashes "/" after directory name to copy entire directory; putting the slash makes rsync copy the files within that directory...so the external drive will end up with a bunch of files not in a project folder.
+
+# Note: Add '--delete' the command above to remove deleted files from the backup.

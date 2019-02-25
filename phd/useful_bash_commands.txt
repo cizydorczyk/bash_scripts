@@ -1,0 +1,9 @@
+## Get number of reads from fastq file:
+awk '{s++}END{print s/4}' <fastq file>
+
+## Get the % reads mapping to genus for each report file from Kraken2 in the format:
+	<filename>
+	<% reads mapping & other info>
+for i in *.txt; do echo $i; grep '<genus>' $i | head -n 1; done
+## Related to getting the first # occurrence(s) of pattern using grep for small files:
+grep 'pattern' | head -n #
