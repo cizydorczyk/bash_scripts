@@ -7,3 +7,14 @@ awk '{s++}END{print s/4}' <fastq file>
 for i in *.txt; do echo $i; grep '<genus>' $i | head -n 1; done
 ## Related to getting the first # occurrence(s) of pattern using grep for small files:
 grep 'pattern' | head -n #
+
+## Get # reads and # bases in fastq file:
+fix_base_count() {
+    local counts=($(cat))
+    echo "${counts[0]} $((${counts[1]} - ${counts[0]}))"
+}
+
+gzip -dc ERR047740_1.filt.fastq.gz \
+    | awk 'NR % 4 == 2' \
+    | wc -cl \
+    | fix_base_count
