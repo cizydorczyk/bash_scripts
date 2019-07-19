@@ -18,3 +18,12 @@ gzip -dc ERR047740_1.filt.fastq.gz \
     | awk 'NR % 4 == 2' \
     | wc -cl \
     | fix_base_count
+
+## Get fastq from sam file:
+cat samplename.nomapping.sam | grep -v ^@ | awk 'NR%2==1 {print "@"$1"\n"$10"\n+\n"$11}' > unmapped/samplename_1.fastq # R1 
+cat samplename.nomapping.sam | grep -v ^@ | awk 'NR%2==0 {print "@"$1"\n"$10"\n+\n"$11}' > unmapped/samplename_2.fastq # R2
+
+# grep -v ^@ removes the SAM header lines
+# NR%2==1 executes on only the odd-numbered rows (this is to split paired-end output – my input SAM file is name-sorted, so paired # reads occupy consecutive lines)
+# NR%2==0 executes on only the even-numbered rows
+# "@"$1"\n"$10"\n+\n"$11 grabs the read name ($1), read ($10), and base quality scores ($11) and writes them out per the FASTQ spec
