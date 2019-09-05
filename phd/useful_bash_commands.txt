@@ -27,3 +27,13 @@ cat samplename.nomapping.sam | grep -v ^@ | awk 'NR%2==0 {print "@"$1"\n"$10"\n+
 # NR%2==1 executes on only the odd-numbered rows (this is to split paired-end output – my input SAM file is name-sorted, so paired # reads occupy consecutive lines)
 # NR%2==0 executes on only the even-numbered rows
 # "@"$1"\n"$10"\n+\n"$11 grabs the read name ($1), read ($10), and base quality scores ($11) and writes them out per the FASTQ spec
+
+
+
+## Rename fasta headers from whatever they are to sequentially numbered:
+## e.g. from >long_fasta_header to >1
+awk '/^>/{print ">" ++i; next}{print}' < fasta.file
+
+## Change home directory ownership after re-installing Ubuntu (which I have had to do a million times):
+conrad@conrad-Precision-Tower-3620:~$ sudo chown -R $USER /home/conrad/
+
