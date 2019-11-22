@@ -37,3 +37,12 @@ awk '/^>/{print ">" ++i; next}{print}' < fasta.file
 ## Change home directory ownership after re-installing Ubuntu (which I have had to do a million times):
 conrad@conrad-Precision-Tower-3620:~$ sudo chown -R $USER /home/conrad/
 
+## Use bioawk get multi-fasta (and single fasta) seq lengths:
+bioawk -c fastx '{print $name length($seq)}' input.fasta
+
+## Convert phylip to fasta using BBMap phylip2fasta:
+~/software/bbmap/phylip2fasta.sh in=./st12_vs_5585_snps.phylip out=st12_vs_5585_snps.fasta
+
+## Split multi-fasta to sequentially numbered individual fasta files:
+(gubbins-env) conrad@conrad-Precision-Tower-3620:~/hinfluenzae/snvphyl_testing$ awk '/^>/{s=++d".fasta"} {print > s}' PMEN1.aln
+

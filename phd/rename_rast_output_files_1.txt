@@ -1,0 +1,18 @@
+# Bash commands to rename files after downloading from Rast (17 files total):
+
+# Rename assembly contigs files:
+(base) conrad@conrad-Precision-Tower-3620:~/hinfluenzae/de_novo_assemblies/F18_de_novo_assemblies_depth_filter_01/rast_annotations$ for i in $(cat ~/hinfluenzae/hi_isolate_list.txt); do mv $i/*.contigs.fa $i/$i".contigs.fa"; done
+
+# Make directory for "ec-stripped" files & move "ec-stripped" files into it:
+(base) conrad@conrad-Precision-Tower-3620:~/hinfluenzae/de_novo_assemblies/F18_de_novo_assemblies_depth_filter_01/rast_annotations$ for i in $(cat ~/hinfluenzae/hi_isolate_list.txt); do mkdir $i/ec_stripped_files; done
+
+(base) conrad@conrad-Precision-Tower-3620:~/hinfluenzae/de_novo_assemblies/F18_de_novo_assemblies_depth_filter_01/rast_annotations$ for i in $(cat ~/hinfluenzae/hi_isolate_list.txt); do mv $i/*stripped.* $i/ec_stripped_files/; done
+
+# Also move merged gbk files into ec-stripped directory b/c they make it difficult to rename normal .gbk files:
+(base) conrad@conrad-Precision-Tower-3620:~/hinfluenzae/de_novo_assemblies/F18_de_novo_assemblies_depth_filter_01/rast_annotations$ for i in $(cat ~/hinfluenzae/hi_isolate_list.txt); do mv $i/*.merged.gbk $i/ec_stripped_files/; done
+
+# Renaming the following extensions files works best when ec-stripped/merged gbk files have been moved, otherwise they will also be renamed & errors will occur:
+# Simply replace .embl with other extensions for the other files
+(base) conrad@conrad-Precision-Tower-3620:~/hinfluenzae/de_novo_assemblies/F18_de_novo_assemblies_depth_filter_01/rast_annotations$ for i in $(cat ~/hinfluenzae/hi_isolate_list.txt); do mv $i/*.embl $i/$i".embl"; done
+
+
