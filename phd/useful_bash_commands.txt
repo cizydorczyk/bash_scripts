@@ -11,13 +11,17 @@ grep 'pattern' | head -n #
 ## Get # reads and # bases in fastq file:
 fix_base_count() {
     local counts=($(cat))
-    echo "${counts[0]} $((${counts[1]} - ${counts[0]}))"
+    echo "$i"_"$j ${counts[0]} $((${counts[1]} - ${counts[0]}))"
 }
 
 gzip -dc ERR047740_1.filt.fastq.gz \
     | awk 'NR % 4 == 2' \
     | wc -cl \
     | fix_base_count
+
+# The fix_base_count function needs a $i and $j variable; i=isolate, j=fq number (1=forward, 2=reverse). To properly include these variables, run the script like so:
+#(base) conrad@conrad-Precision-Tower-3620:~/hinfluenzae$ for i in $(cat ~/hinfluenzae/hi_isolate_list.txt); do for j in {1..2}; do gzip -dc ~/hinfluenzae/fastq_files/i1_q5_trimmed_fastq/$i"_"$j".fastq.gz" | awk 'NR % 4 == 2' | wc -cl | fix_base_count; done; done
+# Note that i iterates over isolates, and j iterates over the _1 and _2 fastq files (forward & reverse).
 
 ## Get fastq from sam file:
 cat samplename.nomapping.sam | grep -v ^@ | awk 'NR%2==1 {print "@"$1"\n"$10"\n+\n"$11}' > unmapped/samplename_1.fastq # R1 
@@ -46,3 +50,5 @@ bioawk -c fastx '{print $name length($seq)}' input.fasta
 ## Split multi-fasta to sequentially numbered individual fasta files:
 (gubbins-env) conrad@conrad-Precision-Tower-3620:~/hinfluenzae/snvphyl_testing$ awk '/^>/{s=++d".fasta"} {print > s}' PMEN1.aln
 
+## Filter fasta by contig length:
+bioawk -v len=${MINCONTIGLEN} -c fastx '{ if(length($seq) > len) { print ">"$name; print $seq }}' st23_testing/combined-unmapped-reads/unicycler/assembly.fasta > ${FILTASSEMBLY}

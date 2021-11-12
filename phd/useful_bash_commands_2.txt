@@ -1,0 +1,19 @@
+# Split bam by contig:
+## NOTE: must be run on indexed/sorted bam
+~/software/bamtools/src/bamtools split -in A008P2426.sorted.bam -reference
+
+# Get average depth & stdev across contig from bam:
+## NOTE that the bam must be sorted/indexed
+samtools depth -a A008P2426.sorted.REF_1.bam | awk '{sum+=$3; sumsq+=$3*$3} END { print "Average = ",sum/NR; print "Stdev = ",sqrt(sumsq/NR - (sum/NR)**2)}'
+
+# Get length of alignment from BAM:
+samtools depth -a A008P2426.sorted.REF_72.bam | awk '{if($3>0) total+=1}END{print total}'
+
+# Get header from bam:
+samtools view -H <in.bam>
+
+# Get length of fasta seqs in file:
+awk '/^>/ {if (seqlen){print seqlen}; print ;seqlen=0;next; } { seqlen += length($0)}END{print seqlen}' test.out.fasta
+
+# Iterate over files with *REF_[digits 0-9 of any length]:
+for i in A008P2426.sorted.REF_[0-9]*.bam; do echo $i; done
